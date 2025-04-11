@@ -1,0 +1,12 @@
+{
+    "global": {
+        "cancel": "Cancelar",
+        "name": "Nome",
+        "email": "Email",
+        "password": "Senha"
+    },
+    "entry": {
+        "login": "Entrar",
+        "signup": "Inscrever-se"
+    }
+}

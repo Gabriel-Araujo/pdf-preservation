@@ -1,0 +1,15 @@
+.main {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.signupForm {
+    background: var(--foreground-translucent);
+    width: clamp(100px, 50vw, 500px);
+    height: clamp(400px, 40vw, 800px);
+    border-radius: 20px;
+    padding: 20px;
+}
