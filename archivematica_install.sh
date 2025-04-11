@@ -4,7 +4,7 @@ ECHO build time is approximated in 20m.
 
 git clone https://github.com/artefactual/archivematica.git --branch qa/1.x --recurse-submodules
 
-cd ./archivematica/hack || exit
+cd ./archivematica/hack || { echo "'./archivematica/hack' directory doesn't exists."; exit 1; }
 
 make create-volumes
 

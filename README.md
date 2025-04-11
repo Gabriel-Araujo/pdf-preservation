@@ -9,7 +9,7 @@ Uma api simples para a preserveção de arquivos pdfs.
 
 **OBS: O [Archivematica](https://www.archivematica.org/pt-br/) só funciona no linux. Portanto os comandos só irão funcionar no Linux ou no WSL.**
 
-Ou seguir os executar os seguintes comandos no diretório ráiz:
+Ou  executar os seguintes comandos no diretório ráiz:
     
 1.
     ```shell
@@ -51,6 +51,21 @@ O seguinte comando inicia os containers do archivematica, do backend e do fronte
 ./init.sh
 ````
 **OBS: Antes de fazer a primeira inicialização leia a seção [Primeira Inicialização](#primeira-inicialização) do backend.**
+
+## Archivematica
+
+Se a instalação e configuração do Archivematica for concluída com sucesso, será possível
+acessar suas interfaces pelos endereços:
+
+> - Dashboard: http://127.0.0.1:62080/
+> - Storage Service: http://127.0.0.1:62081/
+
+As credenciais são:
+
+- username: test
+- password: test
+
+**OBS: As interfaces só ficarão acessíveis enquanto os containers do `Archivematica` estiverem online.**
 ## Backend
 
 ### Primeira inicialização
