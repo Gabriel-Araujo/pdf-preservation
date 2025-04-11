@@ -2,6 +2,55 @@
 
 Uma api simples para a preserveção de arquivos pdfs.
 
+## Pre-requisitos
+
+É necessário baixar e instalar o Archivematica. Para isso, basta executar o arquivo .sh:
+> archivematica_install.sh
+
+**OBS: O [Archivematica](https://www.archivematica.org/pt-br/) só funciona no linux. Portanto os comandos só irão funcionar no Linux ou no WSL.**
+
+Ou seguir os executar os seguintes comandos no diretório ráiz:
+    
+1.
+    ```shell
+    git clone https://github.com/artefactual/archivematica.git --branch qa/1.x --recurse-submodules
+    ```
+2.
+   ```shell
+   cd ./archivematica/hack
+   ```
+3.
+   ````shell
+   make create-volumes
+   ````
+4.
+   ````shell
+   make build
+   ````
+5.
+   ````shell
+   docker compose up -d
+   ````
+6.
+   ````shell
+   make bootstrap
+   ````
+7.
+    ````shell
+    make restart-am-services
+    ````
+---
+
+Após a instalação e configuração inicial do Archivematica você pode executar o seguinte comando para reconstruir e reconfigurar os containers:
+```shell
+./refresh_init.sh
+```
+
+O seguinte comando inicia os containers do archivematica, do backend e do frontend:
+````shell
+./init.sh
+````
+**OBS: Antes de fazer a primeira inicialização leia a seção [Primeira Inicialização](#primeira-inicialização) do backend.**
 ## Backend
 
 ### Primeira inicialização
