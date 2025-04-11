@@ -1,6 +1,5 @@
 services:
     db:
-        container_name: postgres
         image: postgres
         restart: always
         hostname: db
@@ -40,6 +39,15 @@ services:
             - DB_HOST=db
             - ARCHIVE_KEY=test
             - ARCHIVE_USER=test
+        networks:
+            - outside
+            - default
+
+    frontend:
+        build: ./frontend
+        restart: always
+        ports:
+            - "3000:3000"
         networks:
             - outside
             - default
