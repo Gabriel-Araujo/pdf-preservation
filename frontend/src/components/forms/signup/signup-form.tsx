@@ -1,7 +1,7 @@
 "use client"
 
 import {signup} from "@/app/actions/auth";
-import styles from "./../components.module.css"
+import styles from "../../components.module.css"
 import { useActionState, MouseEvent} from "react";
 import {Button, Input} from "@/components";
 import {redirect} from "next/navigation";

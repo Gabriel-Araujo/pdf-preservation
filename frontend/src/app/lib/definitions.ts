@@ -17,6 +17,17 @@ export const SignupFormSchema = z.object({
         .trim(),
 })
 
+export const SigninFormSchema = z.object({
+    email: z
+        .string()
+        .nonempty()
+        .email({ message: 'Please enter a valid email.' }).trim(),
+    password: z
+        .string()
+        .nonempty({ message: 'Password field is required' })
+        .trim(),
+})
+
 export type FormState =
     | {
     errors?: {
