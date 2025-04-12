@@ -12,4 +12,25 @@
     height: clamp(400px, 40vw, 800px);
     border-radius: 20px;
     padding: 20px;
+    display: grid;
+    justify-content: center;
+    grid-template-rows: 1fr 9fr;
+}
+
+.signupForm form div {
+    width: clamp(200px, 50vw, 400px);
+}
+
+.signupForm h3 {
+    text-align: center;
+}
+
+
+@media (width <= 500px) {
+    .signupForm {
+        background: none;
+        width: 100vw;
+        height: 80vh;
+    }
+
 }

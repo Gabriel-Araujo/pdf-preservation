@@ -2,7 +2,6 @@ import { SignupFormSchema, FormState } from '@/app/lib/definitions'
 
 export async function signup(state: FormState, formData: FormData) {
     const url = "http://localhost:5000/auth/signup";
-    console.log(url);
 
     const validatedFields = SignupFormSchema.safeParse({
         name: formData.get('name'),
@@ -17,14 +16,11 @@ export async function signup(state: FormState, formData: FormData) {
         }
     }
 
-
-
     if (!url) {
         return {
             message: 'An error occurred while creating your account.',
         }
     }
-
 
     const data = {
         "name": formData.get('name'),
@@ -32,15 +28,9 @@ export async function signup(state: FormState, formData: FormData) {
         "password": formData.get('password'),
     }
 
-    const s = JSON.stringify(data);
-
-    console.log(s)
-    console.log(formData)
-
-
-    let result = await fetch(url, {
+    const result = await fetch(url, {
         method: 'POST',
-        body: s,
+        body: JSON.stringify(data),
         headers: {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*',
@@ -51,6 +41,7 @@ export async function signup(state: FormState, formData: FormData) {
 
 
     if (result.status !== 201) {
+        alert("Something bad happened.")
         return {
             message: 'An error occurred while creating your account.',
         }

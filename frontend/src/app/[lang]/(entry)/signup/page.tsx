@@ -1,4 +1,3 @@
-
 import styles from "../entry.module.css"
 import {getDictionary} from "@/app/[lang]/dictionaries";
 import {SignupForm} from "@/components/signup/signup-form";
@@ -13,6 +12,7 @@ export default async function Page({params}: { params: Promise<{ lang: "en" | "b
     const dict = await getDictionary(lang);
     return (
         <main className={styles.signupForm}>
+            <h3 >{dict.entry.signup}</h3>
             <SignupForm dict={dict} />
         </main>
     );

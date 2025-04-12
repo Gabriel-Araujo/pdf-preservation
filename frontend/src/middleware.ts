@@ -14,7 +14,6 @@ export function middleware(request: NextRequest) {
         (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
     )
 
-    console.log(locale)
     if (pathnameHasLocale) return;
 
     request.nextUrl.pathname = `/${locale}${pathname}`

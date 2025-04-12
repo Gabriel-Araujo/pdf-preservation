@@ -1,45 +1,50 @@
 "use client"
 
 import {signup} from "@/app/actions/auth";
-import styles from "./signup.module.css"
-import {useActionState} from "react";
+import styles from "./../components.module.css"
+import { useActionState, MouseEvent} from "react";
+import {Button, Input} from "@/components";
+import {redirect} from "next/navigation";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
+export function SignupForm({dict} ) {
+    const [state, action] = useActionState(signup, undefined);
 
-export function SignupForm({dict} :{dict: any}) {
-    const [state, action, pending] = useActionState(signup, undefined);
-
+    async function handleCancel(e: MouseEvent<HTMLButtonElement>) {
+        e.preventDefault();
+        redirect("login")
+    }
     return (
-        <form action={action}>
+        <form action={action} className={styles.signup_form}>
+
             <div>
-                <h3>{dict.entry.signup}</h3>
+                <label htmlFor="name">{dict.global.name}</label>
+                <Input name={"name"} placeholder={dict.global.name} type="text" />
+                {state?.errors?.name && <p>{state.errors.name}</p>}
             </div>
-            <div>
-                <label htmlFor="name">Name</label>
-                <input name="name" id={styles.name_input} placeholder={dict.global.name} type="text"/>
-            </div>
-            {state?.errors?.name && <p>{state.errors.name}</p>}
             <div>
                 <label htmlFor="email">Email</label>
-                <input name="email" id={styles.email_input} placeholder={dict.global.email} type="text"/>
+                <Input name="email" id={styles.email_input} placeholder={dict.global.email} type="text"/>
+                {state?.errors?.email && <p>{state.errors.email}</p>}
             </div>
-            {state?.errors?.email && <p>{state.errors.email}</p>}
             <div>
                 <label htmlFor="password">Password</label>
-                <input name="password" id={styles.password_input} placeholder={dict.global.password} type="password"/>
+                <Input name="password" id={styles.password_input} placeholder={dict.global.password} type="password"/>
+                {state?.errors?.password && (
+                    <div>
+                        <p>Password must:</p>
+                        <ul>
+                            {state.errors.password.map((error) => (
+                                <li key={error}>- {error}</li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
             </div>
-            {state?.errors?.password && (
-                <div>
-                    <p>Password must:</p>
-                    <ul>
-                        {state.errors.password.map((error) => (
-                            <li key={error}>- {error}</li>
-                        ))}
-                    </ul>
-                </div>
-            )}
-            <div>
-                <button>{dict.global.cancel}</button>
-                <button type={"submit"}>{dict.entry.signup}</button>
+            <div style={{flexDirection: "row", alignItems: "end"}}>
+                <Button type={"button"} id={styles.danger} onClick={handleCancel}>{dict.global.cancel}</Button>
+                <Button type={"submit"} id={styles.success}>{dict.entry.signup}</Button>
             </div>
         </form>
     );
