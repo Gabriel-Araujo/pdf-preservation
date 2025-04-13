@@ -1,11 +1,8 @@
-import {
-    SignupFormSchema,
-    SigninFormSchema,
-    FormState} from '@/app/lib/definitions'
+import {FormState, SigninFormSchema, SignupFormSchema} from '@/app/lib/definitions'
 import {decodeJwt} from "jose";
 import {setCookie} from "cookies-next";
 import {redirect} from "next/navigation";
-import {login, register} from "@/app/lib/endpoints";
+import {login, register} from "@/app/lib/endpoints/endpoints";
 
 const EMAIL = "email"
 const PASSWORD = "password"

@@ -18,7 +18,7 @@
 }
 
 .signupForm form div {
-    width: clamp(200px, 50vw, 400px);
+    width: clamp(150px, 50vw, 350px);
 }
 
 .signupForm h3 {
@@ -26,11 +26,22 @@
 }
 
 
-@media (width <= 500px) {
+@media (width <= 800px) {
     .signupForm {
         background: none;
         width: 100vw;
         height: 80vh;
+    }
+
+    .signupForm form {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1rem;
+    }
+
+    .signupForm form div {
+        width: clamp(200px, 80vw, 400px);
+
     }
 
 }

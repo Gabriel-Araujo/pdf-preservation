@@ -40,5 +40,18 @@
 
 .signup_form div label {
     font-size: .8rem;
+}
 
+.breadcrumb {
+    display: inline-flex;
+    column-gap: 0.5rem;
+}
+
+.breadcrumb a {
+    text-decoration: none;
+    transition: color .3s ease;
+}
+
+.breadcrumb a:hover {
+    color: var(--light-blue);
 }

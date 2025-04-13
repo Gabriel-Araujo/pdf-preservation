@@ -3,7 +3,14 @@
         "cancel": "Cancelar",
         "name": "Nome",
         "email": "Email",
-        "password": "Senha"
+        "password": "Senha",
+        "active": "Ativo",
+        "yes": "Sim",
+        "no": "Não",
+        "type": "Tipo",
+        "admin": "Administrador",
+        "user": "Usuário",
+        "profile": "Perfil"
     },
     "entry": {
         "login": "Entrar",

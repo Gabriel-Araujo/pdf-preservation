@@ -4,7 +4,7 @@ const headers = {
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
 }
 
-const base_url = process.env.ROOT_URL ?? "http://localhost:5000";
+export const base_url = process.env.ROOT_URL ?? "http://localhost:5000";
 
 export const login = async (email?: string, password?: string) => {
 

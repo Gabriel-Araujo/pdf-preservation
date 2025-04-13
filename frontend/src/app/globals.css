@@ -5,6 +5,8 @@
   --foreground-translucent: #17171708;
   --red: oklch(57.7% 0.245 27.325);
   --green: oklch(64.8% 0.2 131.684);
+  --blue: oklch(54.6% 0.245 262.881);
+  --light-blue: oklch(70.7% 0.165 254.624);
 }
 
 @media (prefers-color-scheme: dark) {

@@ -3,7 +3,14 @@
         "cancel": "Cancel",
         "name": "Name",
         "email": "Email",
-        "password": "Password"
+        "password": "Password",
+        "active": "Active",
+        "yes": "Yes",
+        "no": "No",
+        "type": "Type",
+        "admin": "Administrator",
+        "user": "User",
+        "profile": "Profile"
     },
     "entry": {
         "login": "Login",
