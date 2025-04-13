@@ -43,6 +43,8 @@ services:
         networks:
             - outside
             - default
+        volumes:
+            -   "archivematica_storage_service_location_data:/var/archivematica"
 
     frontend:
         build: ./frontend
@@ -57,6 +59,10 @@ services:
 
 volumes:
     postgres:
+
+    archivematica_storage_service_location_data:
+        name: "ss-location-data"
+        external: true
 
 networks:
     outside:
