@@ -21,6 +21,7 @@ Também é necessário criar o arquivo `.env` com as informações:
 ````
 ARCHIVE__KEY="test"
 ARCHIVE__USER="test"
+ARCHIVE__PATH="/../var/archivematica/archivematica/users"
 
 DATABASE_URL="postgresql://postgres:123456789@${DB_HOST}:5432/postgres?schema=public"
 SALT=10

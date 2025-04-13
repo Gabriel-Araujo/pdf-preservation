@@ -1,17 +1,17 @@
 import {
+    Body,
     Controller,
     Get,
-    Post,
-    Body,
-    Request,
-    InternalServerErrorException,
     HttpException,
     HttpStatus,
+    InternalServerErrorException,
+    Post,
+    Request,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { Prisma } from '../../prisma/prisma';
-import {Admin} from "../auth/decorators/admin.decorator";
+import { Admin } from '../auth/decorators/admin.decorator';
 
 @Controller('users')
 export class UsersController {

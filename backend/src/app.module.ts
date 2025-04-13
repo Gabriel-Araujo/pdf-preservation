@@ -6,15 +6,10 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { ArchivematicaModule } from './archivematica/archivematica.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
-    imports: [
-        ConfigModule.forRoot(),
-        DatabaseModule,
-        UsersModule,
-        AuthModule,
-        ArchivematicaModule],
+    imports: [ConfigModule.forRoot(), DatabaseModule, UsersModule, AuthModule, FilesModule],
     controllers: [AppController],
     providers: [AppService],
 })
