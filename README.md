@@ -105,3 +105,14 @@ As credenciais necessárias para isso são:
 
 > - email: admin@admin.com
 > - password: pgadmin4
+
+
+## Frontend
+
+### Arquivo .env
+Na raíz do diretório `frontend` é necessário criar o arquivo .env contendo:
+
+````
+BACKEND_HOST="${BACK_HOST}"
+ROOT_HOST="http://${BACK_HOST}:5000"
+````
