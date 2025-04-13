@@ -55,3 +55,55 @@
 .breadcrumb a:hover {
     color: var(--light-blue);
 }
+
+.nav {
+    overflow: hidden;
+    transition: height .3s ease;
+    height: 100vh;
+    padding: 40px 20px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.nav div {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+}
+
+.show {
+    height: 100vh !important;
+}
+
+.navButton {
+    visibility: hidden;
+    position: absolute;
+}
+
+.navItem a {
+    transition: color .3s ease;
+}
+
+.navItem a:hover {
+    color: var(--light-blue);
+}
+
+@media screen and (width < 800px) {
+    .navButton {
+        position: unset;
+        visibility: visible;
+        width: min-content;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--foreground)
+    }
+
+    .nav {
+        height: 5vh;
+        width: 100vw;
+        padding: 1.5rem 40px;
+        row-gap: 2rem;
+    }
+}

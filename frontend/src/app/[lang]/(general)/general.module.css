@@ -16,15 +16,8 @@
     row-gap: 2rem;
 }
 
-.nav {
-    height: 100vh;
-}
 
-@media (width < 800) {
-    .nav {
-        height: 5vh;
-        width: 100vw;
-    }
+@media (width < 800px) {
     .general {
         display: flex;
         flex-direction: column;

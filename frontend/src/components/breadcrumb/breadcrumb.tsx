@@ -14,10 +14,9 @@ const house =
     </svg>
 
 function Breadcrumb(props: Props) {
-
     let key = 0;
     return <div {...props} className={`${styles.breadcrumb} ${props.className}`}>
-        <Link href={"/home"}>{house}</Link>
+        <Link href={`/home`}>{house}</Link>
         {Array.isArray(props.children) ?
             props.children?.length ?? 0 > 0 ?
                 props.children?.map((item) => <div key={key++}>{"/"} {item}</div>) : null :

@@ -3,6 +3,8 @@ import {cookies} from "next/headers";
 import {base_url} from "./endpoints";
 
 export const get_profile = async (): Promise<User| null> => {
+    console.log("kkk=", base_url);
+
     if (!base_url) {
         throw new Error("Missing url.");
     }

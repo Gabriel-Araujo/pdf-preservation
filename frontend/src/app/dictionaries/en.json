@@ -10,7 +10,8 @@
         "type": "Type",
         "admin": "Administrator",
         "user": "User",
-        "profile": "Profile"
+        "profile": "Profile",
+        "home": "Homepage"
     },
     "entry": {
         "login": "Login",

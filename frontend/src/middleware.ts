@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import type {NextRequest} from 'next/server'
+import {NextResponse} from 'next/server'
 import {cookies} from "next/headers";
 
 const locales = ['en', 'br']
@@ -22,11 +22,12 @@ export async function middleware(request: NextRequest) {
     const { pathname } = request.nextUrl
     const pathnameHasLocale = locales.some(
         (locale) => pathname.startsWith(`/${locale}/`) || pathname === `/${locale}`
-    )
+    );
+
+    const cookieStore = await cookies();
+    cookieStore.set("language", get_locale(pathname));
 
     if (pathnameHasLocale) return;
-
-    (await cookies()).set("language", locale);
 
     request.nextUrl.pathname = `/${locale}${pathname}`;
 
@@ -36,4 +37,14 @@ export async function middleware(request: NextRequest) {
 // See "Matching Paths" below to learn more
 export const config = {
     matcher: '/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+}
+
+const get_locale = (path: string) => {
+    const hasLocale = locales.some(
+        locale => path.startsWith(`/${locale}/`) || path === `/${locale}`,
+    )
+    if (hasLocale) {
+        return path.slice(1, 2).toLowerCase()
+    }
+    return "br"
 }

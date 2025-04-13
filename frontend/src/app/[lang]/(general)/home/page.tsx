@@ -8,7 +8,7 @@ export default async function Page({params}: { params: Promise<{ lang: "en" | "b
     return (
         <>
             <Breadcrumb />
-            <div></div>
+            <div>{dict.global.user}</div>
         </>
     );
 }

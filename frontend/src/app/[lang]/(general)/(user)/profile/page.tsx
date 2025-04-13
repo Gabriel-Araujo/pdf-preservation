@@ -15,7 +15,7 @@ export default async function Page({params}: { params: Promise<{ lang: "en" | "b
     return (
         <>
             <Breadcrumb>
-                <BreadcrumbLink href={""}>{dict.global.profile}</BreadcrumbLink>
+                <BreadcrumbLink href={`/${lang}`}>{dict.global.profile}</BreadcrumbLink>
             </Breadcrumb>
             <div style={{ display: "flex", flexDirection: "column", rowGap: ".5rem" }}>
                 <div>
