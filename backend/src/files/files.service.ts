@@ -1,13 +1,21 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    InternalServerErrorException,
+} from '@nestjs/common';
 import { mkdirSync, writeFileSync } from 'fs';
 import { UsersService } from '../users/users.service';
 import * as process from 'node:process';
+import { ArchivematicaService } from '../archivematica/archivematica.service';
 
 const base_path =
     process.env.ARCHIVE_PATH ?? '/var/archivematica/archivematica/users';
 @Injectable()
 export class FilesService {
-    constructor(private readonly userService: UsersService) {}
+    constructor(
+        private readonly userService: UsersService,
+        private readonly archivematicaService: ArchivematicaService,
+    ) {}
     async handleFileUpload(
         files: Array<Express.Multer.File>,
         userEmail: string,
@@ -31,6 +39,12 @@ export class FilesService {
         let date = new Date().toISOString().replaceAll(':', '_');
         let rest = files.filter((file) => file.originalname !== 'metadata.csv');
 
+        if (rest.length === 0) {
+            throw new BadRequestException(
+                'At lest one file should be uploaded',
+            );
+        }
+
         mkdirSync(`${base_path}/${user.id}/${date}/metadata`, {
             recursive: true,
         });
@@ -49,5 +63,22 @@ export class FilesService {
                 file.buffer,
             );
         });
+
+        let location = await this.archivematicaService.get_default_ts();
+
+        if (!location) {
+            throw new InternalServerErrorException();
+        }
+
+        let resourse_path = `${location.uuid}:archivematica/users/${user.id}/${date}`;
+        let encoded_path = Buffer.from(resourse_path).toString('base64');
+
+        console.log(resourse_path);
+        console.log(encoded_path);
+
+        return this.archivematicaService.init_automated_transfer(
+            rest[0].originalname.split('.')[0],
+            encoded_path,
+        );
     }
 }
