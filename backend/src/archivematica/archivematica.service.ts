@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import * as process from 'node:process';
 import Location from './entities/location';
+import { readFileSync } from 'node:fs';
 
 @Injectable()
 export class ArchivematicaService {
-    dashboard = process.env.DASHBOARD_URL ?? 'http://172.18.0.1:62080';
-    storage = process.env.STORAGE_URL ?? 'http://172.18.0.1:62081';
+    dashboard = process.env.DASHBOARD_URL ?? 'http://localhost:62080';
+    storage = process.env.STORAGE_URL ?? 'http://localhost:62081';
 
     fixed_header = {
         authorization: `ApiKey ${process.env.ARCHIVE__USER}:${process.env.ARCHIVE__KEY}`,
@@ -15,6 +16,9 @@ export class ArchivematicaService {
 
     async test() {
         console.log(this.fixed_header);
+        let config = readFileSync('ProcessingMCP.xml');
+        console.log(config);
+
         return (
             await this.httpService.axiosRef.get(
                 `${this.dashboard}/api/transfer/completed/`,
@@ -45,7 +49,7 @@ export class ArchivematicaService {
                 {
                     name: name,
                     path: encoded_path,
-                    processing_config: 'automated',
+                    // processing_config: 'automated',
                     auto_approve: true,
                 },
                 { headers: { ...this.fixed_header } },

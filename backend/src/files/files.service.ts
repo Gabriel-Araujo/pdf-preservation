@@ -7,6 +7,7 @@ import { mkdirSync, writeFileSync } from 'fs';
 import { UsersService } from '../users/users.service';
 import * as process from 'node:process';
 import { ArchivematicaService } from '../archivematica/archivematica.service';
+import { readFileSync } from 'node:fs';
 
 const base_path =
     process.env.ARCHIVE_PATH ?? '/var/archivematica/archivematica/users';
@@ -63,6 +64,12 @@ export class FilesService {
                 file.buffer,
             );
         });
+
+        let config = readFileSync('processingMCP.xml');
+        writeFileSync(
+            `${base_path}/${user.id}/${date}/processingMCP.xml`,
+            config,
+        );
 
         let location = await this.archivematicaService.get_default_ts();
 
