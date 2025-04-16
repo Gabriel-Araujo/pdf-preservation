@@ -60,10 +60,10 @@
       <appliesTo>accea2bf-ba74-4a3a-bb97-614775c74459</appliesTo>
       <goToChain>e0a39199-c62a-4a2f-98de-e9d1116460a8</goToChain>
     </preconfiguredChoice>
-    <!-- Create SIP(s): Send to backlog -->
+    <!-- Create SIP(s): Create single SIP and continue processing -->
     <preconfiguredChoice>
       <appliesTo>bb194013-597c-4e4a-8493-b36d190f8717</appliesTo>
-      <goToChain>7065d256-2f47-4b7d-baec-2c4699626121</goToChain>
+      <goToChain>61cfa825-120e-4b17-83e6-51a42b67d969</goToChain>
     </preconfiguredChoice>
     <!-- Perform file format identification (Ingest): Yes -->
     <preconfiguredChoice>

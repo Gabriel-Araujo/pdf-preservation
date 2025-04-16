@@ -3,6 +3,9 @@ import { HttpService } from '@nestjs/axios';
 import * as process from 'node:process';
 import Location from './entities/location';
 import { readFileSync } from 'node:fs';
+import { ArchiveFile } from './entities/file';
+import { Page } from './entities/page';
+import { writeFileSync } from 'fs';
 
 @Injectable()
 export class ArchivematicaService {
@@ -55,5 +58,73 @@ export class ArchivematicaService {
                 { headers: { ...this.fixed_header } },
             )
         ).data;
+    }
+
+    async get_archive_files_list(
+        queries?: readonly string[],
+    ): Promise<{ meta: Page; objects: ArchiveFile[] }> {
+        let _queries = 'package_type=transfer';
+        if (queries) {
+            queries.forEach((query) => (_queries += '&' + query));
+        }
+        return (
+            await this.httpService.axiosRef.get(
+                `${this.storage}/api/v2/file/?${_queries}`,
+                {
+                    headers: { ...this.fixed_header },
+                },
+            )
+        ).data;
+    }
+
+    async get_file(uuid: string): Promise<ArchiveFile | null> {
+        let archive = await this.httpService.axiosRef.get(
+            `${this.storage}/api/v2/file/${uuid}/`,
+            {
+                headers: { ...this.fixed_header },
+            },
+        );
+        if (archive.status !== 200) {
+            return null;
+        }
+        return archive.data;
+    }
+
+    async get_metadata(uuid: string) {
+        return (
+            await this.httpService.axiosRef.get(
+                `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=data/metadata/metadata.csv`,
+                {
+                    headers: {
+                        ...this.fixed_header,
+                        responseType: 'blob',
+                    },
+                },
+            )
+        ).data;
+    }
+
+    async download_file(uuid: string) {
+        let metadata = await this.get_metadata(uuid);
+
+        if (!metadata) {
+            return null;
+        }
+
+        let metadata_array: string[] = metadata.split('\n');
+        let filename_index = metadata_array[0].indexOf('filename');
+        let filename = metadata_array[1].split(',')[filename_index];
+
+        let response = await this.httpService.axiosRef.get(
+            `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=data/${filename}`,
+            {
+                headers: {
+                    ...this.fixed_header,
+                    responseType: 'blob',
+                },
+            },
+        );
+        writeFileSync('/tmp/a.pdf', response.data);
+        return [metadata, response.data];
     }
 }

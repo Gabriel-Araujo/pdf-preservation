@@ -2,12 +2,13 @@ import {
     BadRequestException,
     Injectable,
     InternalServerErrorException,
+    NotFoundException,
 } from '@nestjs/common';
-import { mkdirSync, writeFileSync } from 'fs';
 import { UsersService } from '../users/users.service';
-import * as process from 'node:process';
 import { ArchivematicaService } from '../archivematica/archivematica.service';
+import { mkdirSync, writeFileSync } from 'fs';
 import { readFileSync } from 'node:fs';
+import * as process from 'node:process';
 
 const base_path =
     process.env.ARCHIVE_PATH ?? '/var/archivematica/archivematica/users';
@@ -18,33 +19,41 @@ export class FilesService {
         private readonly archivematicaService: ArchivematicaService,
     ) {}
     async handleFileUpload(
-        files: Array<Express.Multer.File>,
+        file: Express.Multer.File,
+        metadata: string,
         userEmail: string,
     ) {
-        if (files.length === 0) {
-            throw new BadRequestException('No files uploaded');
-        }
-
-        let metadata = files.find(
-            (file) => file.originalname === 'metadata.csv',
-        );
-
-        if (!metadata) {
+        if (metadata.length === 0) {
             throw new BadRequestException('No metadata file uploaded');
         }
 
+        let _metadata = metadata.split('&').map((i: string) => i.split('='));
+
+        if (!_metadata.find((i) => i[0] === 'filename')) {
+            throw new BadRequestException('No filename');
+        }
+
+        let metadata_body = '';
+
+        let metadata_header = _metadata.reduce(
+            (accumulator: string, current: string[]) => {
+                metadata_body += `${current[1]},`;
+                return accumulator + current[0] + ',';
+            },
+            '',
+        );
+
+        metadata_body = metadata_body.substring(0, metadata_body.length - 1);
+        metadata_header =
+            metadata_header.substring(0, metadata_header.length - 1) + '\n';
+
         let user = await this.userService.findOneByEmail(userEmail);
+
         if (!user) {
             throw new BadRequestException('No user');
         }
-        let date = new Date().toISOString().replaceAll(':', '_');
-        let rest = files.filter((file) => file.originalname !== 'metadata.csv');
 
-        if (rest.length === 0) {
-            throw new BadRequestException(
-                'At lest one file should be uploaded',
-            );
-        }
+        let date = new Date().toISOString().replaceAll(':', '_');
 
         mkdirSync(`${base_path}/${user.id}/${date}/metadata`, {
             recursive: true,
@@ -55,15 +64,13 @@ export class FilesService {
 
         writeFileSync(
             `${base_path}/${user.id}/${date}/metadata/metadata.csv`,
-            metadata.buffer,
+            metadata_header + metadata_body,
         );
 
-        rest.forEach((file) => {
-            writeFileSync(
-                `${base_path}/${user.id}/${date}/objects/${file.originalname}`,
-                file.buffer,
-            );
-        });
+        writeFileSync(
+            `${base_path}/${user.id}/${date}/objects/${file.originalname}`,
+            file.buffer,
+        );
 
         let config = readFileSync('processingMCP.xml');
         writeFileSync(
@@ -80,12 +87,43 @@ export class FilesService {
         let resourse_path = `${location.uuid}:archivematica/users/${user.id}/${date}`;
         let encoded_path = Buffer.from(resourse_path).toString('base64');
 
-        console.log(resourse_path);
-        console.log(encoded_path);
-
         return this.archivematicaService.init_automated_transfer(
-            rest[0].originalname.split('.')[0],
+            file.originalname.split('.')[0],
             encoded_path,
         );
+    }
+
+    async get_files_list(queries?: string[]) {
+        let files =
+            await this.archivematicaService.get_archive_files_list(queries);
+        return {
+            page: {
+                limit: files.meta.limit,
+                offset: files.meta.offset,
+                total_count: files.meta.total_count,
+            },
+            objects: files.objects.map((file) => ({
+                uuid: file.uuid,
+                stored_date: file.stored_date,
+                size: file.size,
+                package_type: file.package_type,
+                related_packages: file.related_packages,
+                name: file.current_full_path
+                    .split('/')
+                    .at(-1)
+                    ?.split('-')
+                    ?.at(0),
+            })),
+        };
+    }
+
+    async get_file(uuid: string) {
+        let archive = await this.archivematicaService.download_file(uuid);
+
+        if (!archive) {
+            throw new NotFoundException('File not found');
+        }
+
+        return archive;
     }
 }
