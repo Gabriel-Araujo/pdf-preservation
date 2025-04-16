@@ -11,10 +11,17 @@
         "admin": "Administrator",
         "user": "User",
         "profile": "Profile",
-        "home": "Homepage"
+        "home": "Homepage",
+        "upload": "Upload"
     },
     "entry": {
         "login": "Login",
         "signup": "Sign Up"
+    },
+    "metadata": {
+        "title": "Title",
+        "description": "Description",
+        "language": "Language",
+        "rights": "Rights"
     }
 }

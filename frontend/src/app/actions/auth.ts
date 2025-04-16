@@ -74,5 +74,5 @@ export async function signin(state: FormState, formData: FormData) {
 
     setCookie("token", token, { maxAge: payload.exp})
 
-    redirect("/")
+    redirect("/home")
 }

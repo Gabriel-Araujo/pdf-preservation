@@ -1,0 +1,58 @@
+.modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #00000098;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.innerModal {
+    background: var(--foreground);
+    color: var(--background);
+    width: clamp(300px, 50vw, 600px);
+    height: clamp(300px, 50vh, 500px);
+    border-radius: 20px;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.exitButton {
+    position: absolute;
+    background: none;
+    border: none;
+    color: var(--background);
+    cursor: pointer;
+    transition: color .2s ease;
+}
+
+.exitButton:hover {
+    color: var(--red);
+}
+
+.input {
+    background: var(--background-translucent);
+    color: var(--background);
+    padding: 0 5px;
+}
+
+.SendFileModal {
+    display: flex;
+    flex-direction: column;
+    row-gap: 1rem;
+    padding-top: 20px;
+}
+
+.metadataField {
+    display: flex;
+    flex-direction: column;
+}
+
+.SendFileModal label {
+    color: var(--background)
+}

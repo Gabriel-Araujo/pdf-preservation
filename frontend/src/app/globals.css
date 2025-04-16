@@ -15,6 +15,7 @@
     --background-translucent: #0a0a0a08;
     --foreground: #ededed;
     --foreground-translucent: #ededed08;
+    --blue: oklch(37.9% 0.146 265.522)
   }
 }
 

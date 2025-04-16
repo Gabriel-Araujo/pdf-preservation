@@ -42,8 +42,8 @@ export function SigninForm({dict}) {
                 )}
             </div>
             <div style={{flexDirection: "row", alignItems: "end"}}>
-                <Button disabled={isPending} type={"button"} id={styles.danger} onClick={handleCancel}>{dict.global.cancel}</Button>
-                <Button disabled={isPending} type={"submit"} id={styles.success}>{dict.entry.login}</Button>
+                <Button disabled={isPending} type={"button"} variant={"danger"} onClick={handleCancel}>{dict.global.cancel}</Button>
+                <Button disabled={isPending} type={"submit"} variant={"success"}>{dict.entry.login}</Button>
             </div>
         </form>
     );

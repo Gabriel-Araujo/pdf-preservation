@@ -12,14 +12,23 @@
     cursor: pointer;
     transition: all .5s ease;
     border-radius: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: .2rem;
 }
 
-#danger:hover {
+.primaryButton:hover {
+    background-color: var(--blue) !important;
+    color: white;
+}
+
+.dangerButton:hover {
     background-color: var(--red);
     color: white;
 }
 
-#success:hover {
+.successButton:hover {
     background: var(--green);
     color: white;
 }
