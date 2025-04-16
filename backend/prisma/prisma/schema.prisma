@@ -27,6 +27,14 @@ model User {
   @@index([name], map: "name_index")
 }
 
+model File {
+  id   Int      @id @default(autoincrement())
+  uuid String
+  date DateTime
+
+  @@index([uuid], map: "uuid_index")
+}
+
 enum UserType {
   User
   Admin

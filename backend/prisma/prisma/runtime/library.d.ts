@@ -313,7 +313,7 @@ export declare function createParam(name: string): Param<unknown, string>;
  * Custom fetch function for `DataProxyEngine`.
  *
  * We can't use the actual type of `globalThis.fetch` because this will result
- * in API Extractor referencing Node.js type definitions.ts in the `.d.ts` bundle
+ * in API Extractor referencing Node.js type definitions in the `.d.ts` bundle
  * for the client runtime. We can only use such types in internal types that
  * don't end up exported anywhere.
 

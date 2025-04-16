@@ -1,5 +1,5 @@
 import {getDictionary} from "@/app/[lang]/dictionaries";
-import {Breadcrumb, HomeMenuBar} from "@/components";
+import {ArchiveTable, Breadcrumb, HomeMenuBar} from "@/components";
 
 
 export default async function Page({params}: { params: Promise<{ lang: "en" | "br" }> }) {
@@ -13,11 +13,12 @@ export default async function Page({params}: { params: Promise<{ lang: "en" | "b
         language: dict.metadata.language,
         rights: dict.metadata.rights,
     }
+
     return (
         <>
             <Breadcrumb />
             <HomeMenuBar dict={d} />
-            <div>{dict.global.user}</div>
+            <ArchiveTable />
         </>
     );
 }

@@ -1,0 +1,26 @@
+.table {
+    border-radius: 8px;
+    border: 1px solid var(--foreground);
+}
+
+.tableHeader {
+}
+
+.tableHeader tr {
+    border-bottom: 1px solid var(--foreground);
+}
+
+.tableBody {}
+
+.tableRow {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.tableCell {
+    width: clamp(100px, 20vw, 300px);
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}

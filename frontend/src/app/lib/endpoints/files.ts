@@ -1,4 +1,4 @@
-import {base_url} from "@/app/lib/endpoints/endpoints";
+import {base_url, headers} from "@/app/lib/endpoints/endpoints";
 import {getCookie} from "cookies-next";
 
 export const upload = async (metadata: string, file: File) => {
@@ -19,4 +19,16 @@ export const upload = async (metadata: string, file: File) => {
         },
         body: formData
     })
+}
+
+export const getFiles = async () => {
+    const token = getCookie("token");
+    console.log(token);
+
+    if (!token) {return null;}
+
+    return fetch(base_url + "/files", {
+        method: "GET",
+        headers: {...headers, "authorization": `Bearer ${token}`,}
+    });
 }

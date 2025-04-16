@@ -62,13 +62,15 @@ function SendFileModal(props: Props) {
 
     const onSend = useCallback(() => {
         if (title.length === 0 || description.length === 0 || language.length === 0 || rights.length === 0|| !file ) {
-            alert("missing fields;")
+            alert("Campos Faltando.")
             return;
         }
         const metadata = `filename=objects/${file.name}&title=${title}&description=${description}&language=${language}&rights=${rights}`;
 
         upload(metadata, file)
             .then(r => console.log(r));
+
+        alert("enviado!")
 
     }, [title, description, language, rights, file]);
 
