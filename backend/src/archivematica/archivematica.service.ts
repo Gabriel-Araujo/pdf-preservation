@@ -52,7 +52,7 @@ export class ArchivematicaService {
                 {
                     name: name,
                     path: encoded_path,
-                    // processing_config: 'automated',
+                    processing_config: 'automated',
                     auto_approve: true,
                 },
                 { headers: { ...this.fixed_header } },
@@ -90,10 +90,38 @@ export class ArchivematicaService {
         return archive.data;
     }
 
+    // TODO Ajeitar o uri
     async get_metadata(uuid: string) {
+        let archive_file = await this.get_file(uuid);
+
+        if (!archive_file) {
+            return null;
+        }
+
+        const current_path = archive_file.current_path.split('/');
+        const zip_name = current_path.at(-1)?.split('.')[0];
+        const file_name = zip_name?.split('-')[0];
+        const aip_uuid = zip_name?.split(file_name + '-')[1];
+
+        if (!aip_uuid) {
+            return null;
+        }
+
+        const mets = await this.httpService.axiosRef
+            .get(
+                `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=${zip_name}/data/METS.${aip_uuid}.xml`,
+                {
+                    headers: {
+                        ...this.fixed_header,
+                        responseType: 'blob',
+                    },
+                },
+            )
+            .then((res) => res.data);
+
         return (
             await this.httpService.axiosRef.get(
-                `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=data/metadata/metadata.csv`,
+                `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=${zip_name}/data/metadata/metadata.csv`,
                 {
                     headers: {
                         ...this.fixed_header,
@@ -105,9 +133,17 @@ export class ArchivematicaService {
     }
 
     async download_file(uuid: string) {
+        let archive_file = await this.get_file(uuid);
         let metadata = await this.get_metadata(uuid);
 
-        if (!metadata) {
+        if (!metadata || !archive_file) {
+            return null;
+        }
+
+        const current_path = archive_file.current_path.split('/');
+        const zip_name = current_path.at(-1);
+
+        if (!zip_name) {
             return null;
         }
 
@@ -116,7 +152,7 @@ export class ArchivematicaService {
         let filename = metadata_array[1].split(',')[filename_index];
 
         let response = await this.httpService.axiosRef.get(
-            `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=data/${filename}`,
+            `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=${zip_name}/data/${filename}`,
             {
                 headers: {
                     ...this.fixed_header,

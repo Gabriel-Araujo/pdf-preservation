@@ -12,8 +12,8 @@ COPY . .
 RUN npm run build
 ENV PORT=5000
 
-#CMD ["npm", "run", "start:prod"]
+CMD ["npm", "run", "start:prod"]
 
-CMD ["npm", "run", "start:migrate:prod"]
+#CMD ["npm", "run", "start:migrate:prod"]
 
 EXPOSE 5000

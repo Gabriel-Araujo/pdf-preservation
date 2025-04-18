@@ -127,12 +127,6 @@ exports.Prisma.UserScalarFieldEnum = {
   type: 'type'
 };
 
-exports.Prisma.FileScalarFieldEnum = {
-  id: 'id',
-  uuid: 'uuid',
-  date: 'date'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -148,8 +142,7 @@ exports.UserType = exports.$Enums.UserType = {
 };
 
 exports.Prisma.ModelName = {
-  User: 'User',
-  File: 'File'
+  User: 'User'
 };
 
 /**
