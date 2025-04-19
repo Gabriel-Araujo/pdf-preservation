@@ -33,17 +33,22 @@ export const getFiles = async () => {
     });
 }
 
-export const downloadFile = (uuid: string) => {
+export const downloadFile = async (uuid: string) => {
     const token = getCookie("token");
     if (!token) {return null;}
 
-    fetch(base_url + `/files/${uuid}`, {
+    return await fetch(base_url + `/files/${uuid}`, {
         method: "GET",
         headers: {...headers, "authorization": `Bearer ${token}`}
     })
-        .then(res => res.blob())
-        .then(blob => {
-            const file = window.URL.createObjectURL(blob);
-            window.open(file);
-        })
+}
+
+export const getMetadata = async (uuid: string) => {
+    const token = getCookie("token");
+    if (!token) {return null;}
+
+    return await fetch(base_url + `/files/${uuid}/metadata`, {
+        method: "GET",
+        headers: {...headers, "authorization": `Bearer ${token}`}
+    }).then(res => res.json())
 }

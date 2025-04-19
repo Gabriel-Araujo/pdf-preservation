@@ -65,8 +65,9 @@ function SendFileModal(props: Props) {
             alert("Campos Faltando.")
             return;
         }
-        const metadata = `filename=objects/${file.name}&title=${title}&description=${description}&language=${language}&rights=${rights}`;
+        const metadata = `filename=objects/${file.name}&dc.title=${title}&dc.description=${description}&dc.language=${language}&dc.rights=${rights}`;
 
+        console.log(metadata);
         upload(metadata, file)
             .then(r => console.log(r));
 

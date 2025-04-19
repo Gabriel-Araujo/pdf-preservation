@@ -106,6 +106,7 @@ export class FilesService {
             },
             objects: files.objects.map((file) => ({
                 uuid: file.uuid,
+                status: file.status,
                 stored_date: file.stored_date,
                 size: file.size,
                 package_type: file.package_type,
@@ -121,5 +122,13 @@ export class FilesService {
 
     get_file(uuid: string) {
         return this.archivematicaService.download_file(uuid);
+    }
+
+    async get_file_metadata(uuid: string) {
+        const metadata = await this.archivematicaService.get_metadata(uuid);
+
+        if (!metadata) {return null;}
+
+        return Object.fromEntries(metadata)
     }
 }

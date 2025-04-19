@@ -39,7 +39,11 @@ export class FilesController {
         return this.filesService.get_files_list();
     }
 
-    // TODO Implementar metadata
+    @Get(':uuid/metadata')
+    async get_metadata(@Param('uuid') id: string) {
+        return await this.filesService.get_file_metadata(id);
+    }
+
     @Get(':uuid')
     async downloadFile(@Param('uuid') id: string, @Response() res: Res) {
         const metadata = await this.archiveService.get_metadata(id);

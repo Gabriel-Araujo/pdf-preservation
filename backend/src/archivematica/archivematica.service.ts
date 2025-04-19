@@ -121,6 +121,7 @@ export class ArchivematicaService {
 
         const start_index = t.findIndex(i => i.includes("<dcterms:dublincore"))
         const end_index = t.findIndex(i => i.includes("</dcterms:dublincore"))
+        console.log(t.slice(start_index+1, end_index));
         const filename = get_original_filename(t)
         t = t.slice(start_index+1, end_index);
 
