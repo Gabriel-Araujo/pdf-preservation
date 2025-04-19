@@ -89,7 +89,6 @@ export class ArchivematicaService {
         return archive.data;
     }
 
-    // TODO Ajeitar o uri
     async get_metadata(uuid: string) {
         let archive_file = await this.get_file(uuid);
 
@@ -106,7 +105,7 @@ export class ArchivematicaService {
             return null;
         }
 
-        return await this.httpService.axiosRef
+        let t: string[] = await this.httpService.axiosRef
             .get(
                 `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=${zip_name}/data/METS.${aip_uuid}.xml`,
                 {
@@ -116,7 +115,16 @@ export class ArchivematicaService {
                     },
                 },
             )
-            .then((res) => res.data);
+            .then((res) => res.data)
+            .then(data => data.split("\n"))
+            .then(data => data.map((i: string) => i.trim()));
+
+        const start_index = t.findIndex(i => i.includes("<dcterms:dublincore"))
+        const end_index = t.findIndex(i => i.includes("</dcterms:dublincore"))
+        const filename = get_original_filename(t)
+        t = t.slice(start_index+1, end_index);
+
+        return  [["filename", filename], ...t.map(i => treat_mets_metadata(i))]
     }
 
     async download_file(uuid: string) {
@@ -144,4 +152,24 @@ export class ArchivematicaService {
             },
         );
     }
+}
+
+function treat_mets_metadata(field: Readonly<string>) {
+    let _field = field;
+
+    _field = _field.substring(4, _field.length - 1);
+
+    const field_name = _field.substring(0, _field.indexOf(">"))
+    const field_value = _field.substring(_field.indexOf(">")+1, _field.indexOf("<"));
+
+    return [field_name, field_value];
+}
+
+function get_original_filename(mets: string[]) {
+    const uuid_field = mets.find(i => i.includes("<premis:objectIdentifierValue>"))
+    const uuid = uuid_field?.split("<premis:objectIdentifierValue>")[1].split("</premis:objectIdentifierValue>")[0]
+
+    const original_field = mets.find(i => i.includes("<premis:originalName>"))
+
+    return original_field?.split("<premis:originalName>")[1].split("</premis:originalName>")[0].split(`-${uuid}`)[0] || "";
 }

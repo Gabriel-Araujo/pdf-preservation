@@ -32,3 +32,18 @@ export const getFiles = async () => {
         headers: {...headers, "authorization": `Bearer ${token}`,}
     });
 }
+
+export const downloadFile = (uuid: string) => {
+    const token = getCookie("token");
+    if (!token) {return null;}
+
+    fetch(base_url + `/files/${uuid}`, {
+        method: "GET",
+        headers: {...headers, "authorization": `Bearer ${token}`}
+    })
+        .then(res => res.blob())
+        .then(blob => {
+            const file = window.URL.createObjectURL(blob);
+            window.open(file);
+        })
+}

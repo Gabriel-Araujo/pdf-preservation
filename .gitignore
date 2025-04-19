@@ -1,6 +1,6 @@
 #Archivematica
-/archivematica
-
+archivematica/*
+/archivematica/*
 #ides
 .idea
 .vscode/*

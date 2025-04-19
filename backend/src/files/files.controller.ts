@@ -13,11 +13,11 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
 import { Response as Res } from 'express';
-import { map } from 'rxjs';
+import { ArchivematicaService } from '../archivematica/archivematica.service';
 
 @Controller('files')
 export class FilesController {
-    constructor(private readonly filesService: FilesService) {}
+    constructor(private readonly filesService: FilesService, private readonly archiveService: ArchivematicaService) {}
 
     @Post('/upload')
     @UseInterceptors(FileInterceptor('file'))
@@ -42,6 +42,10 @@ export class FilesController {
     // TODO Implementar metadata
     @Get(':uuid')
     async downloadFile(@Param('uuid') id: string, @Response() res: Res) {
+        const metadata = await this.archiveService.get_metadata(id);
+        if (!metadata) {return null;}
+
+
         /* let _metadata = metadata.split('\n').map((p) => p.split(','));
         // let metadata_string = '';
 
@@ -51,6 +55,14 @@ export class FilesController {
         });
          */
 
+        let metadata_string =
+        metadata.slice(1, metadata.length).reduce((acc, current) => {
+            if (current) {return acc + `${current[0]}=${current[1]}&`;}
+            return ""
+        }, "")
+
+        console.log(metadata_string);
+
 
         return res
             .status(HttpStatus.OK)
@@ -58,13 +70,13 @@ export class FilesController {
             .set('vary', 'Accept, Accept-Language, Cookie')
             .set('x-frame-options', 'DENY')
             .set('cache-control', 'no-cache')
-            //.set(
-            //    'metadata',
-            //    metadata_string.substring(0, metadata_string.length - 1),
-            //)
+            .set(
+                'metadata',
+                metadata_string.substring(0, metadata_string.length - 1),
+            )
             .set(
                 'content-disposition',
-                `attachment; filename="desafio.pdf"`,
+                `attachment; filename="${metadata[0][1]}.pdf"`,
             ).send(await this.filesService.get_file(id)
                 .then(res => new Blob([res?.data], { type: 'application/pdf' }))
                 .then(blob => blob.arrayBuffer().then(buf => Buffer.from(buf)))
