@@ -5,7 +5,11 @@ meta {
 }
 
 get {
-  url: http://localhost:5000/files/28ee949e-0a55-4634-bda0-1fcc8cc1d8de/metadata
+  url: http://localhost:5000/files/:id/metadata
   body: none
   auth: inherit
+}
+
+params:path {
+  id: e26d526e-2ea8-4466-a0c3-6a2ee5d443ba
 }
