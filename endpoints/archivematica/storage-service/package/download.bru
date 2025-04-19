@@ -1,0 +1,15 @@
+meta {
+  name: download
+  type: http
+  seq: 5
+}
+
+get {
+  url: http://localhost:62081/api/v2/file/:uuid/download/
+  body: none
+  auth: inherit
+}
+
+params:path {
+  uuid: ddad832f-a841-4494-8241-e2d9d391f282
+}

@@ -1,13 +1,14 @@
 .table {
     border-radius: 8px;
-    border: 1px solid var(--foreground);
+    background: var(--foreground-translucent);
+    width: 50vw;
+    align-self: start;
 }
 
 .tableHeader {
 }
 
 .tableHeader tr {
-    border-bottom: 1px solid var(--foreground);
 }
 
 .tableBody {}
@@ -16,11 +17,36 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
+    transition: color 0.3s ease;
+}
+
+.tableRow:hover {
+    background: #0a0a0a47;
 }
 
 .tableCell {
-    width: clamp(100px, 20vw, 300px);
+    width: clamp(100px, 20vw, 200px);
     justify-content: center;
     align-items: center;
     text-align: center;
+}
+
+.tableCell span {
+    transition: color .3s ease;
+}
+
+.tableCell span:hover {
+    color: var(--light-blue);
+}
+
+.actionButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    color: var(--foreground);
+}
+
+.actionButton:hover {
+    color: var(--light-blue);
 }

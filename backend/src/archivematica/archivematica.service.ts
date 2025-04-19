@@ -5,7 +5,6 @@ import Location from './entities/location';
 import { readFileSync } from 'node:fs';
 import { ArchiveFile } from './entities/file';
 import { Page } from './entities/page';
-import { writeFileSync } from 'fs';
 
 @Injectable()
 export class ArchivematicaService {
@@ -52,7 +51,7 @@ export class ArchivematicaService {
                 {
                     name: name,
                     path: encoded_path,
-                    processing_config: 'automated',
+                    // processing_config: 'automated',
                     auto_approve: true,
                 },
                 { headers: { ...this.fixed_header } },
@@ -63,7 +62,7 @@ export class ArchivematicaService {
     async get_archive_files_list(
         queries?: readonly string[],
     ): Promise<{ meta: Page; objects: ArchiveFile[] }> {
-        let _queries = 'package_type=transfer';
+        let _queries = 'package_type=AIP';
         if (queries) {
             queries.forEach((query) => (_queries += '&' + query));
         }
@@ -107,7 +106,7 @@ export class ArchivematicaService {
             return null;
         }
 
-        const mets = await this.httpService.axiosRef
+        return await this.httpService.axiosRef
             .get(
                 `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=${zip_name}/data/METS.${aip_uuid}.xml`,
                 {
@@ -118,49 +117,31 @@ export class ArchivematicaService {
                 },
             )
             .then((res) => res.data);
-
-        return (
-            await this.httpService.axiosRef.get(
-                `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=${zip_name}/data/metadata/metadata.csv`,
-                {
-                    headers: {
-                        ...this.fixed_header,
-                        responseType: 'blob',
-                    },
-                },
-            )
-        ).data;
     }
 
     async download_file(uuid: string) {
         let archive_file = await this.get_file(uuid);
-        let metadata = await this.get_metadata(uuid);
 
-        if (!metadata || !archive_file) {
+        if (!archive_file) {
             return null;
         }
 
         const current_path = archive_file.current_path.split('/');
         const zip_name = current_path.at(-1);
+        const file_name = zip_name?.split(`-${uuid}`)[0];
 
-        if (!zip_name) {
+        if (!file_name) {
             return null;
         }
 
-        let metadata_array: string[] = metadata.split('\n');
-        let filename_index = metadata_array[0].indexOf('filename');
-        let filename = metadata_array[1].split(',')[filename_index];
-
-        let response = await this.httpService.axiosRef.get(
-            `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=${zip_name}/data/${filename}`,
+        return this.httpService.axiosRef.get(
+            `${this.storage}/api/v2/file/${uuid}/extract_file/?relative_path_to_file=${file_name}-${uuid}/data/objects/${file_name}.pdf`,
             {
+                responseType: "arraybuffer",
                 headers: {
                     ...this.fixed_header,
-                    responseType: 'blob',
                 },
             },
         );
-        writeFileSync('/tmp/a.pdf', response.data);
-        return [metadata, response.data];
     }
 }

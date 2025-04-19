@@ -1,0 +1,15 @@
+meta {
+  name: contents
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:62081/api/v2/file/:uuid/contents/
+  body: none
+  auth: inherit
+}
+
+params:path {
+  uuid: 95a0ea1b-bc83-453d-917d-20bba98169a4
+}

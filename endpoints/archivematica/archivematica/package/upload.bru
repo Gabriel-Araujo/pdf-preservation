@@ -1,0 +1,19 @@
+meta {
+  name: upload
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:62080/api/v2beta/package
+  body: json
+  auth: inherit
+}
+
+body:json {
+    {
+      "name": "",
+      "path": "",
+      "processing_config": "automatic",
+    }
+}

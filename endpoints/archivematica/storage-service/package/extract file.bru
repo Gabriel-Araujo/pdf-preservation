@@ -1,0 +1,19 @@
+meta {
+  name: extract file
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:62081/api/v2/file/:uuid/extract_file/?relative_path_to_file=UTF-8Desafio_-_SeleASSAPSo_Fullstack-95a0ea1b-bc83-453d-917d-20bba98169a4/data/objects/UTF-8Desafio_-_SeleASSAPSo_Fullstack.pdf
+  body: none
+  auth: inherit
+}
+
+params:query {
+  relative_path_to_file: UTF-8Desafio_-_SeleASSAPSo_Fullstack-95a0ea1b-bc83-453d-917d-20bba98169a4/data/objects/UTF-8Desafio_-_SeleASSAPSo_Fullstack.pdf
+}
+
+params:path {
+  uuid: 95a0ea1b-bc83-453d-917d-20bba98169a4
+}

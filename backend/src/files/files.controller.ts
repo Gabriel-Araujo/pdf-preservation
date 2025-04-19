@@ -13,6 +13,7 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { FilesService } from './files.service';
 import { Response as Res } from 'express';
+import { map } from 'rxjs';
 
 @Controller('files')
 export class FilesController {
@@ -26,9 +27,6 @@ export class FilesController {
             throw new BadRequestException('No metadata');
         }
 
-        console.log(file);
-        console.log(metadata);
-
         return this.filesService.handleFileUpload(
             file,
             metadata,
@@ -41,31 +39,35 @@ export class FilesController {
         return this.filesService.get_files_list();
     }
 
-    // TODO Resolver bug das páginas brancas
+    // TODO Implementar metadata
     @Get(':uuid')
     async downloadFile(@Param('uuid') id: string, @Response() res: Res) {
-        const [metadata, file] = await this.filesService.get_file(id);
-        let _metadata = metadata.split('\n').map((p) => p.split(','));
-        let metadata_string = '';
+        /* let _metadata = metadata.split('\n').map((p) => p.split(','));
+        // let metadata_string = '';
 
         let i = 0;
         _metadata[0].forEach((param: string) => {
             metadata_string += `${param}=${_metadata[1][i++]}&`;
         });
+         */
+
+
         return res
             .status(HttpStatus.OK)
             .set('content-type', 'application/pdf')
             .set('vary', 'Accept, Accept-Language, Cookie')
             .set('x-frame-options', 'DENY')
             .set('cache-control', 'no-cache')
-            .set(
-                'metadata',
-                metadata_string.substring(0, metadata_string.length - 1),
-            )
+            //.set(
+            //    'metadata',
+            //    metadata_string.substring(0, metadata_string.length - 1),
+            //)
             .set(
                 'content-disposition',
-                `attachment; filename="${_metadata[1][0].split('/')[1]}"`,
-            )
-            .send(file);
+                `attachment; filename="desafio.pdf"`,
+            ).send(await this.filesService.get_file(id)
+                .then(res => new Blob([res?.data], { type: 'application/pdf' }))
+                .then(blob => blob.arrayBuffer().then(buf => Buffer.from(buf)))
+            );
     }
 }

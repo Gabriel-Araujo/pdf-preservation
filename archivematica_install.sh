@@ -21,4 +21,3 @@ make bootstrap
 ECHO restarting archivematica services
 
 make restart-am-services
-

@@ -1,0 +1,23 @@
+meta {
+  name: upload
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:5000/files/upload
+  body: multipartForm
+  auth: inherit
+}
+
+headers {
+  metadata: filename=objects/desafio.pdf&dc.title=teste&dc.description=uma descrição
+}
+
+body:form-urlencoded {
+  file: 
+}
+
+body:multipart-form {
+  file: @file(C:\Users\gabri\Downloads\desafio.pdf)
+}
